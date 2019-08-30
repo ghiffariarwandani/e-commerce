@@ -43,7 +43,7 @@
                 <div style="display: flex; align-items: center">
                   <p
                     style="margin-bottom:5px; font-size: 15px; color: #8d8d8d; text-align:left;"
-                  >Quantity &nbsp</p>
+                  >Quantity &nbsp </p>
                   <a
                     href="#"
                     class="d-flex align-self-center icon"
@@ -136,6 +136,8 @@
 <script>
 import { mapState, mapAction } from "vuex";
 import Swal from "sweetalert2";
+import Toast from '../helpers/swal'
+
 export default {
   data() {
     return {
@@ -159,7 +161,7 @@ export default {
         selectCart.ProductId.quantity--
         this.errorMessage = ".";
       } else
-        this.errorMessage = `Maximum quantity is ${selectCart.ProductId.quantity}`;
+        this.errorMessage = `Stock left ${selectCart.ProductId.quantity}`;
     },
     minQuantity(productId) {
       let selectCart = this.carts.find(el => el.ProductId._id == productId);
@@ -206,12 +208,10 @@ export default {
       }).then(result => {
         if (result.value) {
           this.$store.dispatch('createTransaction', {carts: this.carts, user:this.isUser})
-          Swal.fire({
-            type: "success",
-            title: "Checkout Success",
-            showConfirmButton: false,
-            timer: 1500
-          });
+          Toast.fire({
+            type: 'success',
+            title: 'successfully checkout, go to your profile to check'
+          })
         }
       });
     }

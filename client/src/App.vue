@@ -9,7 +9,8 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+import Toast from './helpers/swal'
 
 export default {
   components: {
@@ -31,14 +32,12 @@ export default {
     logout() {
       console.log("masuk app");
       localStorage.clear();
-      this.$store.commit('setIsLogin', false)
+      this.$store.commit("setIsLogin", false);
       this.$store.isUser = {};
-      this.$store.isLoginForm = false
-      Swal.fire({
+      this.$store.isLoginForm = false;
+      Toast.fire({
         type: "success",
-        title: "Logout Success",
-        showConfirmButton: false,
-        timer: 1500
+        title: "See ya..."
       });
       setTimeout(() => {
         this.$router.push("/");
@@ -47,7 +46,7 @@ export default {
   },
   created() {
     if (localStorage.token) {
-      this.$store.dispatch("setUserData")
+      this.$store.dispatch("setUserData");
       this.$store.commit("setIsLogin", true);
       this.$store.commit("setIsLoginForm", false);
     } else {
@@ -77,5 +76,10 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+* {
+  font-family: "Oswald", sans-serif;
+  color: black;
 }
 </style>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import ax from './apis/server'
 import Swal from 'sweetalert2'
+import Toast from './helpers/swal'
 import router from './router'
 
 Vue.use(Vuex)
@@ -75,12 +76,10 @@ export default new Vuex.Store({
     login({ commit, state }, payload) {
       ax.post('/user/signin', payload) 
         .then(({ data }) => {
-          Swal.fire({
+          console.log('masuk');
+          Toast.fire({
             type: 'success',
-            title: 'Welcome',
-            text: `happy shopping ${data.username}`,
-            showConfirmButton: false,
-            timer: 1500
+            title: `Welcome ${data.username}`
           })
           localStorage.setItem('token', data.token)
           localStorage.setItem('username', data.username)
@@ -91,6 +90,7 @@ export default new Vuex.Store({
           setTimeout(() => { router.push('/') }, 1500)
         })
         .catch(err => {
+          console.log(err);
           Swal.fire({
             type: 'error',
             title: '',
@@ -143,11 +143,9 @@ export default new Vuex.Store({
       ax.post('/cart', payload)
         .then(({ data }) => {
           commit('pushCarts', data)
-          Swal.fire({
-            type:'success',
-            title: 'success added to cart',
-            showConfirmButton: false,
-            timer: 1500
+          Toast.fire({
+            type: 'success',
+            title: 'successfully put in the basket'
           })
         })
         .catch(console.log)
@@ -233,9 +231,9 @@ export default new Vuex.Store({
       ax.patch(`/transaction/${payload}/?status=completed`)
         .then(({data}) => {
           dispatch('fetchTransaction')
-          Swal.fire({
+          Toast.fire({
             type: 'success',
-            title: 'thank! dont forget to give a rate'
+            title: 'Thank for shopping! Dont forget to give a feedback.'
           })
         })
         .catch(console.log)
